@@ -34,6 +34,10 @@ npm run dev
 
 Open http://localhost:3000.
 
+The dev script uses `--webpack` on purpose. This project lives in a folder with spaces in its
+name (DEMO PROJECT FOR CLASS), and the default Turbopack dev server fails to load Google fonts
+from such paths. Production builds are unaffected.
+
 ## Branches
 
 - `main` is the live site.
