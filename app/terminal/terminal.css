@@ -1,0 +1,99 @@
+/* Variant 2, Terminal. Amber phosphor on near-black. Scoped to .tm. */
+.tm {
+  --bg: oklch(13% 0.01 70);
+  --panel: oklch(16% 0.014 70);
+  --fg: oklch(84% 0.15 75);
+  --hi: oklch(93% 0.1 85);
+  --dim: oklch(68% 0.09 75);
+  --ok: oklch(82% 0.17 140);
+  --err: oklch(72% 0.17 30);
+  --line: oklch(28% 0.03 70);
+  min-height: 100dvh;
+  background:
+    radial-gradient(ellipse at 50% 0%, oklch(20% 0.03 70) 0%, transparent 60%),
+    var(--bg);
+  color: var(--fg);
+  font-family: var(--tm-mono), ui-monospace, monospace;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  padding: clamp(12px, 4vw, 48px) clamp(12px, 4vw, 48px) 80px;
+}
+body:has(.tm) { background: oklch(13% 0.01 70); }
+
+.tm-window {
+  position: relative;
+  max-width: 920px; margin: 0 auto;
+  background: var(--panel);
+  border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: 0 30px 80px oklch(0% 0 0 / 0.5), 0 0 0 1px oklch(84% 0.15 75 / 0.04);
+  overflow: hidden;
+}
+/* Scanlines: a faint texture, never over the text contrast budget. */
+.tm-window::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, oklch(0% 0 0 / 0.14) 0 1px, transparent 1px 3px);
+}
+
+.tm-bar {
+  display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+  border-bottom: 1px solid var(--line); background: oklch(18% 0.014 70);
+}
+.tm-bar span { width: 11px; height: 11px; border-radius: 50%; background: oklch(35% 0.03 70); }
+.tm-bar span:first-child { background: var(--err); }
+.tm-bar p { margin: 0 0 0 12px; color: var(--dim); font-size: 0.8125rem; }
+
+.tm-boot { margin: 0; padding: 18px clamp(14px, 3vw, 28px) 0; color: var(--dim); font-size: 0.8125rem; }
+.tm-boot b { color: var(--hi); font-weight: 400; }
+
+.tm-screen { padding: 8px clamp(14px, 3vw, 28px) 28px; cursor: text; }
+.tm-entry { margin-top: 18px; animation: tm-line 420ms var(--ease-out-expo) both; animation-delay: calc(var(--i, 0) * 260ms + 200ms); }
+.tm-cmd { margin: 0; color: var(--hi); overflow-wrap: anywhere; }
+.tm-prompt { color: var(--dim); margin-right: 4px; }
+.tm-prompt b { color: var(--ok); font-weight: 400; }
+.tm-prompt i { color: var(--hi); font-style: normal; }
+.tm-out { margin-top: 6px; text-shadow: 0 0 10px oklch(84% 0.15 75 / 0.25); }
+.tm-out p { margin: 0 0 6px; max-width: 72ch; }
+.tm-out ul { margin: 6px 0; padding-left: 2ch; list-style: "- "; }
+.tm-out a { color: var(--hi); text-underline-offset: 3px; overflow-wrap: anywhere; }
+.tm-out a:hover { color: var(--ok); }
+
+.tm-banner {
+  margin: 4px 0 6px; font-family: var(--tm-banner), monospace; font-weight: 400;
+  font-size: clamp(3rem, 2rem + 6vw, 5.75rem); line-height: 0.9; letter-spacing: 0.01em;
+  color: var(--hi); text-shadow: 0 0 24px oklch(84% 0.15 75 / 0.45);
+}
+.tm-hi { color: var(--hi); }
+.tm-dim { color: var(--dim); }
+.tm-ok { color: var(--ok); }
+.tm-err { color: var(--err); }
+.tm-block { margin: 0 0 16px; }
+
+.tm-table { margin: 0; display: grid; gap: 2px; }
+.tm-table div { display: grid; grid-template-columns: 11ch minmax(0, 1fr); gap: 1ch; }
+@media (min-width: 640px) { .tm-table div { grid-template-columns: 13ch minmax(0, 1fr); } }
+.tm-table dt { color: var(--hi); }
+.tm-table dd { margin: 0; color: var(--dim); }
+
+.tm-form { display: flex; align-items: center; gap: 6px; margin-top: 18px; }
+.tm-form input {
+  flex: 1; min-width: 0; background: transparent; border: 0; outline: 0;
+  color: var(--hi); font: inherit; caret-color: var(--hi); padding: 4px 0;
+}
+.tm-form input::placeholder { color: var(--dim); opacity: 1; }
+.tm-form:focus-within { box-shadow: 0 1px 0 var(--dim); }
+
+.tm-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.tm-chips button {
+  font: inherit; font-size: 0.8125rem; color: var(--fg); background: transparent;
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer;
+  transition: background-color 160ms, color 160ms, border-color 160ms;
+}
+.tm-chips button:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.tm-chips button:focus-visible { outline: 2px solid var(--hi); outline-offset: 2px; }
+
+.tm-foot {
+  margin: 0; padding: 14px clamp(14px, 3vw, 28px); border-top: 1px solid var(--line);
+  color: var(--dim); font-size: 0.75rem;
+}
+
+@keyframes tm-line { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
